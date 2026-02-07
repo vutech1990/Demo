@@ -64,10 +64,11 @@
                     </div>
                     @endif
 
-                    <div class="relative group">
+                    <div class="relative group mt-4">
                         <input type="file" id="thumbnail" name="thumbnail" accept="image/*"
+                            onchange="previewImage(this)"
                             class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                        <div
+                        <div id="upload-placeholder"
                             class="w-full h-24 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 group-hover:bg-amber-50/50 group-hover:border-amber-200 transition-all flex items-center justify-center p-4 text-center">
                             <div
                                 class="w-8 h-8 bg-white rounded-lg shadow-sm flex items-center justify-center text-amber-600 mr-3 group-hover:scale-110 transition-transform">
@@ -79,6 +80,20 @@
                             <span
                                 class="text-[11px] font-bold text-gray-500 group-hover:text-amber-600 uppercase tracking-widest">Thay
                                 đổi ảnh mới</span>
+                        </div>
+                        <div id="image-preview-container"
+                            class="hidden relative w-full h-40 md:h-48 rounded-xl overflow-hidden shadow-lg border border-gray-100 group">
+                            <img id="image-preview" src="#" alt="Preview" class="w-full h-full object-cover">
+                            <div
+                                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <span
+                                    class="text-white text-xs font-bold px-4 py-2 bg-black/50 rounded-lg backdrop-blur-md border border-white/20">Chọn
+                                    ảnh khác</span>
+                            </div>
+                            <div
+                                class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/70 to-transparent">
+                                <p id="file-name" class="text-white text-[10px] font-bold truncate"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -167,6 +182,28 @@
         if (!currentTags.includes(tagName)) {
             currentTags.push(tagName);
             input.value = currentTags.join(', ');
+        }
+    }
+
+    function previewImage(input) {
+        const placeholder = document.getElementById('upload-placeholder');
+        const previewContainer = document.getElementById('image-preview-container');
+        const previewImage = document.getElementById('image-preview');
+        const fileName = document.getElementById('file-name');
+        const currentImage = document.querySelector('div.mb-4.relative.group.w-inline-block');
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                previewImage.src = e.target.result;
+                fileName.textContent = input.files[0].name;
+                placeholder.classList.add('hidden');
+                previewContainer.classList.remove('hidden');
+                if (currentImage) currentImage.classList.add('hidden');
+            }
+
+            reader.readAsDataURL(input.files[0]);
         }
     }
 </script>
