@@ -11,32 +11,32 @@ use App\Http\Controllers\ProfileController;
 // Trang chủ
 Route::get('/', [HomeController::class , 'index'])->name('home');
 
-// Routes xác thực
-Route::get('/register', [AuthController::class , 'showRegisterForm'])->name('register');
-Route::post('/register', [AuthController::class , 'register']);
+// Routes dành cho khách (Chưa đăng nhập)
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [AuthController::class , 'showRegisterForm'])->name('register');
+    Route::post('/register', [AuthController::class , 'register']);
 
-Route::get('/login', [AuthController::class , 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class , 'login']);
+    Route::get('/login', [AuthController::class , 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class , 'login']);
 
-Route::post('/logout', [AuthController::class , 'logout'])->name('logout');
-
-// Quên mật khẩu
-Route::get('/forgot-password', [ForgotPasswordController::class , 'showLinkRequestForm'])->name('password.request');
-Route::post('/forgot-password', [ForgotPasswordController::class , 'sendResetLinkEmail'])->name('password.email');
-Route::get('/password-reset/confirm', [ForgotPasswordController::class , 'confirmReset'])->name('password.reset.confirm');
-
-// Hồ sơ cá nhân & Bài viết của tôi (Yêu cầu đăng nhập)
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class , 'edit'])->name('profile.edit');
-    Route::post('/profile', [ProfileController::class , 'update'])->name('profile.update');
-    Route::get('/my-posts', [PostController::class , 'myPosts'])->name('posts.my');
+    // Quên mật khẩu
+    Route::get('/forgot-password', [ForgotPasswordController::class , 'showLinkRequestForm'])->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class , 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/password-reset/confirm', [ForgotPasswordController::class , 'confirmReset'])->name('password.reset.confirm');
 });
 
-// Routes cho Bình luận
-Route::post('/posts/{id}/comments', [CommentController::class , 'store'])->name('comments.store');
-
-// Routes cho Bài viết (Yêu cầu Đăng nhập)
+// Khu vực yêu cầu Đăng nhập
 Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class , 'logout'])->name('logout');
+
+    // Hồ sơ cá nhân
+    Route::get('/profile', [ProfileController::class , 'edit'])->name('profile.edit');
+    Route::post('/profile', [ProfileController::class , 'update'])->name('profile.update');
+
+    // Quản lý bài viết cá nhân
+    Route::get('/my-posts', [PostController::class , 'myPosts'])->name('posts.my');
+
+    // Viết & Sửa bài bài viết
     Route::get('/posts/create', [PostController::class , 'create']);
     Route::post('/posts', [PostController::class , 'store']);
     Route::get('/posts/{id}/edit', [PostController::class , 'edit']);
@@ -44,6 +44,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/posts/{id}', [PostController::class , 'destroy']);
     Route::post('/upload-image', [PostController::class , 'uploadImage'])->name('ckeditor.upload');
 });
+
+// Routes cho Bình luận
+Route::post('/posts/{id}/comments', [CommentController::class , 'store'])->name('comments.store');
+
+
 
 // Routes cho Bài viết (Công khai)
 Route::get('/posts/{id}', [PostController::class , 'show']);
