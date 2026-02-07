@@ -129,12 +129,12 @@
                         <div class="ml-4">
                             <p class="text-sm font-extrabold text-gray-900">{{ $post->user ? $post->user->name : 'Tác
                                 giả' }}</p>
-                            <p class="text-xs text-gray-400 font-medium">Published on {{ $post->created_at->format('M d,
-                                Y') }}</p>
+                            <p class="text-xs text-gray-400 font-medium">Đã đăng vào {{
+                                $post->created_at->format('d/m/Y') }}</p>
                         </div>
                     </div>
 
-                    <div class="center flex items-center space-x-4 text-gray-400">
+                    <div class="center flex items-center space-x-6 text-gray-400">
                         <div class="flex items-center text-xs font-bold uppercase tracking-wider">
                             <svg class="w-4 h-4 mr-1.5 text-blue-500" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -142,7 +142,18 @@
                                     d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
                                 </path>
                             </svg>
-                            {{ $post->comments->count() }} Comments
+                            {{ $post->comments->count() }} Lượt bình luận
+                        </div>
+                        <div class="flex items-center text-xs font-bold uppercase tracking-wider">
+                            <svg class="w-4 h-4 mr-1.5 text-amber-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                </path>
+                            </svg>
+                            {{ $post->views ?? 0 }} Lượt xem
                         </div>
                     </div>
                 </div>

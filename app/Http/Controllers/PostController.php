@@ -63,6 +63,10 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::with(['comments.replies', 'user', 'tags'])->findOrFail($id);
+
+        // Tăng lượt xem
+        $post->increment('views');
+
         return view('posts.show', compact('post'));
     }
 
