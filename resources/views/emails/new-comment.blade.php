@@ -61,10 +61,11 @@
             <h2 style="color: #10b981; margin: 0;">Bình luận mới trên bài viết</h2>
         </div>
 
-        <p>Chào <strong>{{ $author->name }}</strong>,</p>
+        <p>Chào <strong>{{ $author->name ?? 'Bạn' }}</strong>,</p>
 
-        <p>Bài viết của bạn <strong>"{{ $post->title }}"</strong> vừa nhận được một bình luận mới từ <strong>{{
-                $comment->name }}</strong>:</p>
+        <p>Bài viết của bạn <strong>"{{ $post->title ?? 'Bài viết không tên' }}"</strong> vừa nhận được một bình luận
+            mới từ <strong>{{
+                $comment->name ?? 'Ai đó' }}</strong>:</p>
 
         <div class="quote">
             "{{ $comment->content }}"
@@ -73,7 +74,8 @@
         <p>Bạn có thể xem và phản hồi bình luận này tại đây:</p>
 
         <div style="text-align: center;">
-            <a href="{{ url('/posts/' . $post->id . '#comment-' . $comment->id) }}" class="button">Xem bình luận</a>
+            <a href="{{ url('/posts/' . ($post->id ?? 0) . '#comment-' . ($comment->id ?? 0)) }}" class="button">Xem
+                bình luận</a>
         </div>
 
         <div class="footer">

@@ -61,10 +61,10 @@
             <h2 style="color: #3b82f6; margin: 0;">Phản hồi bình luận mới</h2>
         </div>
 
-        <p>Chào <strong>{{ $parentComment->name }}</strong>,</p>
+        <p>Chào <strong>{{ $parentComment->name ?? 'Bạn' }}</strong>,</p>
 
-        <p><strong>{{ $reply->name }}</strong> vừa trả lời bình luận của bạn tại bài viết:</p>
-        <h3 style="color: #111;">{{ $post->title }}</h3>
+        <p><strong>{{ $reply->name ?? 'Ai đó' }}</strong> vừa trả lời bình luận của bạn tại bài viết:</p>
+        <h3 style="color: #111;">{{ $post->title ?? 'Bài viết' }}</h3>
 
         <div class="quote">
             "{{ $reply->content }}"
@@ -73,7 +73,8 @@
         <p>Bạn có thể xem chi tiết cuộc trò chuyện và phản hồi lại bằng cách nhấn vào nút bên dưới:</p>
 
         <div style="text-align: center;">
-            <a href="{{ url('/posts/' . $post->id . '#comment-' . $reply->id) }}" class="button">Xem ngay bình luận</a>
+            <a href="{{ url('/posts/' . ($post->id ?? 0) . '#comment-' . ($reply->id ?? 0)) }}" class="button">Xem ngay
+                bình luận</a>
         </div>
 
         <div class="footer">
