@@ -32,6 +32,13 @@ class HomeController extends Controller
         $posts = $query->paginate(6)->withQueryString();
         $name = auth()->check() ? auth()->user()->name : 'Tuan Vu';
 
+        if ($request->ajax()) {
+            return view('hello', [
+                'name' => $name,
+                'posts' => $posts
+            ]);
+        }
+
         return view('hello', [
             'name' => $name,
             'posts' => $posts
