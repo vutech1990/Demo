@@ -30,13 +30,11 @@
                 class="w-full pl-10 pr-10 py-3 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition shadow-sm group-hover:shadow-md">
 
             <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
-                {{-- Icon Search --}}
                 <svg id="search-icon" class="w-5 h-5 transition-colors group-hover:text-blue-500" fill="none"
                     stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
-                {{-- Icon Loading --}}
                 <svg id="loading-spinner" class="w-5 h-5 animate-spin hidden text-blue-500"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -79,8 +77,6 @@
                     <span class="text-xs font-medium">No cover image</span>
                 </div>
                 @endif
-
-                {{-- Badge thời gian --}}
                 <div class="absolute top-4 left-4">
                     <span
                         class="px-2.5 py-1 bg-black/50 backdrop-blur-md text-white text-[10px] font-bold rounded-lg shadow-sm">
@@ -89,9 +85,7 @@
                 </div>
             </a>
 
-            {{-- Nội dung bài viết --}}
             <div class="p-6 flex-grow flex flex-col">
-                {{-- Danh sách Tags --}}
                 <div class="flex flex-wrap gap-2 mb-4">
                     @forelse($post->tags as $tag)
                     <a href="/?tag={{ urlencode($tag->name) }}"
@@ -100,9 +94,7 @@
                     </a>
                     @empty
                     <span
-                        class="inline-block px-3 py-1 rounded-full bg-gray-50 text-gray-400 text-[10px] font-bold uppercase tracking-wider">
-                        General
-                    </span>
+                        class="inline-block px-3 py-1 rounded-full bg-gray-50 text-gray-400 text-[10px] font-bold uppercase tracking-wider">General</span>
                     @endforelse
                 </div>
 
@@ -116,14 +108,13 @@
                 </p>
 
                 <div class="pt-4 border-t border-gray-50 flex items-center justify-between">
-                    {{-- Thông tin tác giả --}}
                     <div class="flex items-center group/author">
                         <div
                             class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs ring-4 ring-white shadow-sm overflow-hidden">
                             @if($post->user && $post->user->avatar)
                             <img src="{{ asset($post->user->avatar) }}" class="w-full h-full object-cover">
                             @else
-                            {{ substr($post->user ? $post->user->name : 'V', 0, 1) }}
+                            {{ substr($post->user ? $post->user->name : 'U', 0, 1) }}
                             @endif
                         </div>
                         <div class="ml-2.5">
@@ -134,7 +125,6 @@
                         </div>
                     </div>
 
-                    {{-- Nút Đọc --}}
                     <a href="/posts/{{ $post->id }}"
                         class="flex items-center text-blue-600 font-bold text-xs hover:text-blue-800 transition">
                         Đọc tiếp
@@ -150,7 +140,6 @@
         @endforeach
     </div>
 
-    {{-- Phân trang --}}
     <div class="mt-12" id="pagination-links">
         {{ $posts->links() }}
     </div>
@@ -165,9 +154,8 @@
         </div>
         <p class="text-gray-500 text-lg font-medium">Không tìm thấy bài viết nào phù hợp.</p>
         <a href="/"
-            class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-700 transition inline-block">
-            Quay lại tất cả bài viết
-        </a>
+            class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-700 transition inline-block">Quay
+            lại tất cả bài viết</a>
     </div>
     @endif
 </div>
@@ -180,4 +168,41 @@
         const loadingSpinner = document.getElementById('loading-spinner');
         let searchTimeout;
 
-        if 
+        if (!searchInput) return;
+
+        searchInput.addEventListener('input', function () {
+            clearTimeout(searchTimeout);
+            searchIcon.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+
+            searchTimeout = setTimeout(() => {
+                const query = searchInput.value;
+                const url = new URL(window.location.href);
+                url.searchParams.set('search', query);
+                url.searchParams.delete('page');
+
+                fetch(url, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                    .then(res => res.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newContent = doc.getElementById('posts-container');
+                        if (newContent) {
+                            container.innerHTML = newContent.innerHTML;
+                        }
+                        window.history.pushState({}, '', url);
+                        searchIcon.classList.remove('hidden');
+                        loadingSpinner.classList.add('hidden');
+                    })
+                    .catch(err => {
+                        console.error('Search error:', err);
+                        searchIcon.classList.remove('hidden');
+                        loadingSpinner.classList.add('hidden');
+                    });
+            }, 400);
+        });
+    });
+</script>
+@endsection
