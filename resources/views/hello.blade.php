@@ -80,7 +80,7 @@
                 </div>
                 @endif
 
-                {{-- Badge thời gian trôi qua --}}
+                {{-- Badge thời gian --}}
                 <div class="absolute top-4 left-4">
                     <span
                         class="px-2.5 py-1 bg-black/50 backdrop-blur-md text-white text-[10px] font-bold rounded-lg shadow-sm">
@@ -111,8 +111,8 @@
                     <a href="/posts/{{ $post->id }}">{{ $post->title }}</a>
                 </h2>
 
-                <p class="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-6 flex-grow">
-                    {{ strip_tags($post->content) }}
+                <p class="text-gray-500 text-sm leading-relaxed mb-6 flex-grow line-clamp-3">
+                    {{ Str::limit(strip_tags($post->content), 120) }}
                 </p>
 
                 <div class="pt-4 border-t border-gray-50 flex items-center justify-between">
@@ -123,13 +123,13 @@
                             @if($post->user && $post->user->avatar)
                             <img src="{{ asset($post->user->avatar) }}" class="w-full h-full object-cover">
                             @else
-                            {{ substr($post->user ? $post->user->name : 'Vũ Tuấn', 0, 1) }}
+                            {{ substr($post->user ? $post->user->name : 'V', 0, 1) }}
                             @endif
                         </div>
                         <div class="ml-2.5">
                             <p class="text-[11px] font-bold text-gray-900 truncate max-w-[80px]"
-                                title="{{ $post->user ? $post->user->name : 'Vũ Tuấn' }}">
-                                {{ $post->user ? $post->user->name : 'Vũ Tuấn' }}
+                                title="{{ $post->user ? $post->user->name : 'User' }}">
+                                {{ $post->user ? $post->user->name : 'User' }}
                             </p>
                         </div>
                     </div>
@@ -173,36 +173,11 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', functio n () {
+    document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('live-search');
         const container = document.getElementById('posts-container');
         const searchIcon = document.getElementById('search-icon');
         const loadingSpinner = document.getElementById('loading-spinner');
         let searchTimeout;
 
-        searchInput.addEventListener('input', functi on () {
-            clearTimeout(searchTimeout    // Show loading
-            searchIcon.classList.add('hidden');
-            loadingSpinner.classList.remove('hidden');
-
-            searchTimeout = setTimeout(() => {
-                const query = searchInput.value;
-                const url = new URL(window.location.href);
-                url.searchParams.set('search', query);
-                url.searchParams.delete('page'); // Tìm kiếm thì reset về trang 1
-
-                fetch(url, {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                })
-                             (res => res.text())
-                         then(html => {
-                            const parser = new DOMParser(                               const doc = parser.parseFromString(html, 'text/h                                   const newContent = doc.getElementById('posts-container').                                       container.innerHTML                         / Update URL without reload
-                            window.history.pushState({}, '', url                         ng
-                                     n.classList.remove('hidden');
-                                 ngSpinner.classList.add('hidden');
-                         )
-                        .catch(err =>                               console.error                                   searchIcon.classList.remove(                                       loadingSpinner.classList.                                       });
-            }, 500); // Wait 500ms after last keystroke
-     });
-</script>
-@endsection
+        if 
