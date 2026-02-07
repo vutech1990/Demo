@@ -19,10 +19,30 @@
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/" class="text-2xl font-bold text-blue-600 hover:text-blue-800 transition">Demo WSU</a>
 
-            <a href="/posts/create"
-                class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition shadow-sm cursor-pointer">
-                + Viết bài mới
-            </a>
+            <div class="flex items-center space-x-4">
+                @auth
+                <a href="/posts/create"
+                    class="hidden md:inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition shadow-sm mr-2">
+                    + Viết bài mới
+                </a>
+
+                <span class="text-gray-700 font-semibold border-l pl-4 hidden sm:inline">{{ Auth::user()->name }}</span>
+
+                <form action="{{ route('logout') }}" method="POST" class="inline">
+                    @csrf
+                    <button type="submit"
+                        class="text-red-500 hover:text-red-700 font-medium ml-2 text-sm border border-red-200 px-3 py-1 rounded hover:bg-red-50 transition">
+                        Đăng xuất
+                    </button>
+                </form>
+                @else
+                <a href="{{ route('login') }}" class="text-gray-600 hover:text-blue-600 font-medium mr-2">Đăng nhập</a>
+                <a href="{{ route('register') }}"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition shadow-sm">
+                    Đăng ký
+                </a>
+                @endauth
+            </div>
         </div>
     </nav>
 
