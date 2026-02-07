@@ -11,7 +11,7 @@ class HomeController extends Controller
     public function index()
     {
         $myName = 'Tuan Vu';
-        $posts = Post::all();
+        $posts = Post::with('user')->get();
 
         return view('hello', [
             'name' => $myName,

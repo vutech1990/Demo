@@ -16,12 +16,21 @@
                 {{ strip_tags($post->content) }}
             </p>
             <div class="flex items-center justify-between text-xs border-t pt-4">
-                <div class="text-gray-400 flex items-center">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    {{ $post->created_at->format('d/m/Y') }}
+                <div class="text-gray-400 flex items-center space-x-3">
+                    <div class="flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        {{ $post->created_at->format('d/m/Y') }}
+                    </div>
+                    <div class="flex items-center border-l pl-3">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        {{ $post->user ? $post->user->name : 'Vũ Tuấn' }}
+                    </div>
                 </div>
                 <a href="/posts/{{ $post->id }}" class="text-blue-500 font-semibold hover:text-blue-700 transition">Đọc
                     tiếp →</a>

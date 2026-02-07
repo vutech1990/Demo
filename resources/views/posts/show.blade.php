@@ -1,6 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+
+    @keyframes highlight {
+        0% {
+            background-color: #fef08a;
+        }
+
+        100% {
+            background-color: white;
+        }
+    }
+
+    @keyframes highlight-reply {
+        0% {
+            background-color: #fef08a;
+        }
+
+        100% {
+            background-color: #f9fafb;
+        }
+    }
+
+    .comment-block:target {
+        animation: highlight 3s ease-in-out;
+    }
+
+    .reply-block:target {
+        animation: highlight-reply 3s ease-in-out;
+    }
+</style>
+
 <div class="max-w-4xl mx-auto">
     {{-- Thanh điều hướng nhỏ --}}
     <div class="mb-6 flex justify-between items-center">
@@ -14,7 +48,6 @@
 
         @auth
         <div class="flex space-x-2">
-            {{-- Nút Chỉnh sửa: Admin HOẶC Chủ bài viết --}}
             @if(Auth::user()->email === 'vutech1990@gmail.com' || Auth::id() === $post->user_id)
             <a href="/posts/{{ $post->id }}/edit"
                 class="inline-flex items-center px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium rounded-md shadow-sm transition">
@@ -27,7 +60,6 @@
             </a>
             @endif
 
-            {{-- Nút Xóa: CHỈ Admin --}}
             @if(Auth::user()->email === 'vutech1990@gmail.com')
             <form action="/posts/{{ $post->id }}" method="POST"
                 onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài viết này không?');">
@@ -60,7 +92,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                     </svg>
-                    Tác giả: <span class="font-semibold ml-1">{{ $post->user ? $post->user->name : 'Ẩn danh' }}</span>
+                    Tác giả: <span class="font-semibold ml-1">{{ $post->user ? $post->user->name : 'Vũ Tuấn' }}</span>
                 </div>
                 <div class="flex items-center border-l pl-4">
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,7 +110,7 @@
     </article>
 
     {{-- Phần Bình luận --}}
-    <div class="mt-12 bg-gray-50 p-8 rounded-xl shadow-inner">
+    <div id="comment-section" class="mt-12 bg-gray-50 p-8 rounded-xl shadow-inner">
         <h3 class="text-2xl font-bold text-gray-800 mb-8 flex items-center">
             <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -106,16 +138,14 @@
 
             <form action="{{ route('comments.store', $post->id) }}" method="POST">
                 @csrf
-                <div class="grid grid-cols-1 md::grid-cols-2 gap-4 mb-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     @auth
-                    {{-- Nếu đã đăng nhập, ẩn tên và gán email giá trị tài khoản --}}
                     <div>
                         <label class="block mb-1 text-sm font-medium text-gray-600">Email của bạn</label>
                         <input type="email" name="email" value="{{ Auth::user()->email }}" readonly
                             class="w-full px-3 py-2 bg-gray-100 border rounded focus:outline-none text-gray-500 cursor-not-allowed">
                     </div>
                     @else
-                    {{-- Nếu chưa đăng nhập, bắt buộc nhập tên và email --}}
                     <div>
                         <label class="block mb-1 text-sm font-medium text-gray-600">Tên của bạn</label>
                         <input type="text" name="name" required value="{{ old('name') }}"
@@ -137,16 +167,16 @@
                 </div>
 
                 <button type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition shadow-sm">
-                    Gửi bình luận
-                </button>
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition shadow-sm">Gửi
+                    bình luận</button>
             </form>
         </div>
 
         {{-- Danh sách Bình luận --}}
         <div class="space-y-6">
             @forelse($post->comments->where('parent_id', null) as $comment)
-            <div class="bg-white p-5 rounded-lg border border-gray-100 shadow-sm">
+            <div id="comment-{{ $comment->id }}"
+                class="comment-block bg-white p-5 rounded-lg border border-gray-100 shadow-sm transition-all duration-500">
                 <div class="flex justify-between items-start mb-3">
                     <div class="flex items-center">
                         <div
@@ -169,13 +199,10 @@
                     {{ $comment->content }}
                 </div>
 
-                {{-- Nút Trả lời --}}
                 <button onclick="toggleReplyForm({{ $comment->id }})"
-                    class="text-blue-600 text-xs font-semibold hover:underline">
-                    Trả lời
-                </button>
+                    class="text-blue-600 text-xs font-semibold hover:underline">Trả lời</button>
 
-                {{-- Form Trả lời (Ẩn mặc định) --}}
+                {{-- Form Trả lời --}}
                 <div id="reply-form-{{ $comment->id }}" class="hidden mt-4 pl-6 border-l-2 border-blue-100">
                     <form action="{{ route('comments.store', $post->id) }}" method="POST">
                         @csrf
@@ -206,7 +233,8 @@
                 @if($comment->replies->count() > 0)
                 <div class="mt-6 space-y-4 pl-6 border-l-2 border-gray-100">
                     @foreach($comment->replies as $reply)
-                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+                    <div id="comment-{{ $reply->id }}"
+                        class="reply-block bg-gray-50 p-4 rounded-lg shadow-sm transition-all duration-500">
                         <div class="flex justify-between items-start mb-2">
                             <div class="flex items-center">
                                 <div

@@ -17,7 +17,7 @@ class CommentController extends Controller
         if (!Auth::check()) {
             $userExists = User::where('email', $request->email)->exists();
             if ($userExists) {
-                return back()->withInput()->with('error_email', 'Email này đã được đăng ký tài khoản thành viên. Đây có phải là email của bạn không? Nếu đúng, vui lòng đăng nhập để bình luận.');
+                return redirect(url()->previous() . '#comment-section')->withInput()->with('error_email', 'Email này đã được đăng ký tài khoản thành viên. Đây có phải là email của bạn không? Nếu đúng, vui lòng đăng nhập để bình luận.');
             }
         }
 
@@ -27,7 +27,7 @@ class CommentController extends Controller
             'content' => 'required|string',
         ]);
 
-        Comment::create([
+        $newComment = Comment::create([
             'post_id' => $post->id,
             'user_id' => Auth::id(),
             'parent_id' => $request->parent_id, // Lưu ID của bình luận cha nếu có
@@ -36,6 +36,6 @@ class CommentController extends Controller
             'content' => $request->content,
         ]);
 
-        return back()->with('success', 'Bình luận của bạn đã được đăng!');
+        return redirect(url()->previous() . '#comment-' . $newComment->id)->with('success', 'Bình luận của bạn đã được đăng!');
     }
 }
