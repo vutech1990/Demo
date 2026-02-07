@@ -61,7 +61,7 @@
         <article
             class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full ring-1 ring-black/[0.02]">
             {{-- Phần ảnh Thumbnail --}}
-            <a href="/posts/{{ $post->id }}"
+            <a href="/posts/{{ $post->slug }}"
                 class="aspect-[16/9] w-full overflow-hidden relative bg-gray-100 block group/thumb">
                 @if($post->thumbnail)
                 <img src="{{ asset($post->thumbnail) }}" alt="{{ $post->title }}"
@@ -100,7 +100,7 @@
 
                 <h2
                     class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3 leading-snug group-hover:text-blue-600 transition-colors">
-                    <a href="/posts/{{ $post->id }}">{{ $post->title }}</a>
+                    <a href="/posts/{{ $post->slug }}">{{ $post->title }}</a>
                 </h2>
 
                 <p class="text-gray-500 text-sm leading-relaxed mb-4 flex-grow line-clamp-3 font-medium">
@@ -147,7 +147,7 @@
                         </div>
                     </div>
 
-                    <a href="/posts/{{ $post->id }}"
+                    <a href="/posts/{{ $post->slug }}"
                         class="flex items-center text-blue-600 font-extrabold text-xs hover:text-black transition py-1 uppercase tracking-widest">
                         Đọc tiếp
                         <svg class="w-3.5 h-3.5 ml-1.5 transform group-hover:translate-x-1 transition-transform"

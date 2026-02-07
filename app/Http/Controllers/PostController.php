@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -33,8 +34,16 @@ class PostController extends Controller
             $thumbnailPath = 'thumbnails/' . $fileName;
         }
 
+        $slug = Str::slug($request->title);
+        $originalSlug = $slug;
+        $count = 1;
+        while (Post::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $count++;
+        }
+
         $post = Post::create([
             'title' => $request->title,
+            'slug' => $slug,
             'content' => $request->content,
             'user_id' => auth()->id(),
             'thumbnail' => $thumbnailPath,
@@ -60,9 +69,9 @@ class PostController extends Controller
         return redirect('/')->with('success', 'Bài viết đã được đăng thành công!');
     }
 
-    public function show($id)
+    public function show(Post $post)
     {
-        $post = Post::with(['comments.replies', 'user', 'tags'])->findOrFail($id);
+        $post->load(['comments.replies', 'user', 'tags']);
 
         // Tăng lượt xem
         $post->increment('views');
@@ -70,9 +79,9 @@ class PostController extends Controller
         return view('posts.show', compact('post'));
     }
 
-    public function edit($id)
+    public function edit(Post $post)
     {
-        $post = Post::with('tags')->findOrFail($id);
+        $post->load('tags');
         $tags = Tag::all();
 
         if (auth()->user()->email !== 'vutech1990@gmail.com' && auth()->id() !== $post->user_id) {
@@ -82,10 +91,8 @@ class PostController extends Controller
         return view('posts.edit', compact('post', 'tags'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        $post = Post::findOrFail($id);
-
         if (auth()->user()->email !== 'vutech1990@gmail.com' && auth()->id() !== $post->user_id) {
             abort(403, 'Bạn không có quyền cập nhật bài viết này!');
         }
@@ -101,6 +108,17 @@ class PostController extends Controller
             'title' => $request->title,
             'content' => $request->content,
         ];
+
+        // Cập nhật slug nếu tiêu đề thay đổi
+        if ($post->title !== $request->title) {
+            $slug = Str::slug($request->title);
+            $originalSlug = $slug;
+            $count = 1;
+            while (Post::where('slug', $slug)->where('id', '!=', $post->id)->exists()) {
+                $slug = $originalSlug . '-' . $count++;
+            }
+            $data['slug'] = $slug;
+        }
 
         if ($request->hasFile('thumbnail')) {
             // Xóa ảnh cũ nếu có
@@ -132,13 +150,11 @@ class PostController extends Controller
             $post->tags()->sync($tagIds);
         }
 
-        return redirect("/posts/$id")->with('success', 'Bài viết đã được cập nhật!');
+        return redirect("/posts/{$post->slug}")->with('success', 'Bài viết đã được cập nhật!');
     }
 
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        $post = Post::findOrFail($id);
-
         if (auth()->user()->email !== 'vutech1990@gmail.com') {
             abort(403, 'Chỉ Admin mới có quyền xóa bài viết này!');
         }

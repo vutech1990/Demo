@@ -39,9 +39,9 @@ Route::middleware('auth')->group(function () {
     // Viết & Sửa bài bài viết
     Route::get('/posts/create', [PostController::class , 'create']);
     Route::post('/posts', [PostController::class , 'store']);
-    Route::get('/posts/{id}/edit', [PostController::class , 'edit']);
-    Route::put('/posts/{id}', [PostController::class , 'update']);
-    Route::delete('/posts/{id}', [PostController::class , 'destroy']);
+    Route::get('/posts/{post}/edit', [PostController::class , 'edit']);
+    Route::put('/posts/{post}', [PostController::class , 'update']);
+    Route::delete('/posts/{post}', [PostController::class , 'destroy']);
     Route::post('/upload-image', [PostController::class , 'uploadImage'])->name('ckeditor.upload');
 });
 
@@ -51,7 +51,7 @@ Route::post('/posts/{id}/comments', [CommentController::class , 'store'])->name(
 
 
 // Routes cho Bài viết (Công khai)
-Route::get('/posts/{id}', [PostController::class , 'show']);
+Route::get('/posts/{post}', [PostController::class , 'show']);
 Route::get('/posts', function () {
     return redirect('/');
 });

@@ -69,7 +69,7 @@
                                 </div>
                                 {{-- Title & Tags --}}
                                 <div class="min-w-0 flex-grow">
-                                    <a href="/posts/{{ $post->id }}"
+                                    <a href="/posts/{{ $post->slug }}"
                                         class="text-base font-extrabold text-gray-800 hover:text-blue-600 block line-clamp-1 mb-2 transition">{{
                                         $post->title }}</a>
                                     <div class="flex flex-wrap gap-1.5">
@@ -119,7 +119,7 @@
 
                         <td class="px-8 py-6 text-right whitespace-nowrap">
                             <div class="flex justify-end gap-2">
-                                <a href="/posts/{{ $post->id }}/edit"
+                                <a href="/posts/{{ $post->slug }}/edit"
                                     class="w-10 h-10 flex items-center justify-center bg-amber-50 text-amber-600 hover:bg-amber-600 hover:text-white rounded-xl transition duration-300 shadow-sm"
                                     title="Chỉnh sửa">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -128,7 +128,7 @@
                                         </path>
                                     </svg>
                                 </a>
-                                <form action="/posts/{{ $post->id }}" method="POST" class="inline"
+                                <form action="/posts/{{ $post->slug }}" method="POST" class="inline"
                                     onsubmit="return confirm('Bạn có thực sự muốn xóa bài viết này không?');">
                                     @csrf
                                     @method('DELETE')
