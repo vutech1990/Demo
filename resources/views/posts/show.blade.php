@@ -59,7 +59,7 @@
         @auth
         <div class="flex space-x-2">
             @if(Auth::user()->email === 'vutech1990@gmail.com' || Auth::id() === $post->user_id)
-            <a href="/posts/{{ $post->id }}/edit"
+            <a href="/posts/{{ $post->slug }}/edit"
                 class="inline-flex items-center px-4 py-2 bg-amber-50 text-amber-600 hover:bg-amber-600 hover:text-white text-xs font-bold rounded-lg transition shadow-sm">
                 <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -71,7 +71,7 @@
             @endif
 
             @if(Auth::user()->email === 'vutech1990@gmail.com')
-            <form action="/posts/{{ $post->id }}" method="POST"
+            <form action="/posts/{{ $post->slug }}" method="POST"
                 onsubmit="return confirm('Bạn chắc chắn muốn xóa bài viết này?');">
                 @csrf
                 @method('DELETE')
