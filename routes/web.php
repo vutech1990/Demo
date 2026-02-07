@@ -1,19 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use Laravel\Fortify\Features;
-
-// Route::get('/', function () {
-//     return Inertia::render('welcome', [
-//         'canRegister' => Features::enabled(Features::registration()),
-//     ]);
-// })->name('home');
-
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CommentController;
+// Routes cho Bài viết (Công khai)
+Route::get('/posts/{id}', [PostController::class , 'show']);
+Route::get('/posts', function () {
+    return redirect('/');
+}); App\Http\Controllers\CommentController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ProfileController;
 
@@ -58,9 +49,3 @@ Route::get('/posts/{id}', [PostController::class , 'show']);
 Route::get('/posts', function () {
     return redirect('/');
 });
-
-Route::get('dashboard', function () {
-    return Inertia::render('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-require __DIR__ . '/settings.php';
