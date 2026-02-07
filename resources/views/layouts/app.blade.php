@@ -26,7 +26,11 @@
                     + Viết bài mới
                 </a>
 
-                <div class="flex items-center space-x-2 border-l pl-4 hidden sm:flex">
+                <div class="flex items-center space-x-4 border-l pl-4 hidden sm:flex">
+                    <a href="{{ route('posts.my') }}"
+                        class="text-xs font-bold px-2 py-1 rounded bg-gray-50 text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition uppercase tracking-wider">
+                        Bài viết của tôi
+                    </a>
                     @if(Auth::user()->avatar)
                     <img src="{{ asset('avatars/' . Auth::user()->avatar) }}" alt="Avatar"
                         class="w-8 h-8 rounded-full object-cover border border-blue-500">

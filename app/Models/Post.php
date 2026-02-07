@@ -9,7 +9,7 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'content', 'user_id'];
+    protected $fillable = ['title', 'content', 'user_id', 'thumbnail'];
 
     public function user()
     {
@@ -19,5 +19,10 @@ class Post extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class)->latest();
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
 }

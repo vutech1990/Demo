@@ -8,13 +8,32 @@ use App\Models\Post;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $myName = 'Tuan Vu';
-        $posts = Post::with('user')->get();
+        $query = Post::with(['user', 'tags'])->latest();
+
+        // Tìm kiếm theo tiêu đề hoặc nội dung
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%$search%")
+                    ->orWhere('content', 'like', "%$search%");
+            });
+        }
+
+        // Lọc theo Tag
+        if ($request->has('tag')) {
+            $tagName = $request->get('tag');
+            $query->whereHas('tags', function ($q) use ($tagName) {
+                $q->where('name', $tagName);
+            });
+        }
+
+        $posts = $query->paginate(6)->withQueryString();
+        $name = auth()->check() ? auth()->user()->name : 'Tuan Vu';
 
         return view('hello', [
-            'name' => $myName,
+            'name' => $name,
             'posts' => $posts
         ]);
     }

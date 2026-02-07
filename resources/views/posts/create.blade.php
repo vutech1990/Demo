@@ -14,14 +14,46 @@
     </div>
     @endif
 
-    <form action="/posts" method="POST">
+    <form action="/posts" method="POST" id="post-form" enctype="multipart/form-data">
         @csrf
+
+        <div class="mb-6">
+            <label for="thumbnail" class="block mb-2 text-sm font-medium text-gray-700">Ảnh đại diện bài viết
+                (Thumbnail)</label>
+            <input type="file" id="thumbnail" name="thumbnail" accept="image/*"
+                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('thumbnail') border-red-500 @enderror">
+            <p class="text-[11px] text-gray-400 mt-1 italic">Dịnh dạng: JPG, PNG, WEBP (Tối đa 2MB)</p>
+        </div>
 
         <div class="mb-6">
             <label for="title" class="block mb-2 text-sm font-medium text-gray-700">Tiêu đề bài viết</label>
             <input type="text" id="title" name="title" value="{{ old('title') }}" required
                 class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition @error('title') border-red-500 @enderror"
                 placeholder="Nhập tiêu đề hấp dẫn...">
+        </div>
+
+        {{-- Phần Nhãn dán (Tags) --}}
+        <div class="mb-6">
+            <label for="tags-input" class="block mb-2 text-sm font-medium text-gray-700">Nhãn dán (Tags)</label>
+            <div class="relative">
+                <input type="text" id="tags-input" name="tags" value="{{ old('tags') }}"
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                    placeholder="Nhập tag, cách nhau bởi dấu phẩy (vd: Laravel, PHP, Web)">
+            </div>
+
+            @if($tags->count() > 0)
+            <div class="mt-3">
+                <p class="text-[11px] text-gray-400 mb-2 uppercase font-bold tracking-wider">Gợi ý tag có sẵn:</p>
+                <div class="flex flex-wrap gap-2">
+                    @foreach($tags as $tag)
+                    <button type="button" onclick="addTag('{{ $tag->name }}')"
+                        class="px-3 py-1 bg-gray-100 hover:bg-blue-100 text-gray-600 hover:text-blue-700 text-xs rounded-full transition duration-200">
+                        + {{ $tag->name }}
+                    </button>
+                    @endforeach
+                </div>
+            </div>
+            @endif
         </div>
 
         <div class="mb-6">
@@ -53,6 +85,16 @@
         .catch(error => {
             console.error(error);
         });
+
+    function addTag(tagName) {
+        const input = document.getElementById('tags-input');
+        let currentTags = input.value.split(',').map(t => t.trim()).filter(t => t !== "");
+
+        if (!currentTags.includes(tagName)) {
+            currentTags.push(tagName);
+            input.value = currentTags.join(', ');
+        }
+    }
 </script>
 <style>
     .ck-editor__editable_inline {

@@ -1,49 +1,208 @@
 @extends('layouts.app')
 
 @section('content')
-<h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
-    Xin chào, {{ $name }}! (Demo WSU)
-</h1>
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+    <div class="text-center md:text-left">
+        <h1
+            class="text-4xl font-extrabold bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent mb-3">
+            @if(request('tag'))
+            Chủ đề: {{ request('tag') }}
+            @elseif(request('search'))
+            Kết quả tìm kiếm: "{{ request('search') }}"
+            @else
+            Khám phá bài viết mới
+            @endif
+        </h1>
+        <p class="text-gray-500 text-lg max-w-2xl">
+            @if(auth()->check())
+            Chào mừng <strong>{{ $name }}</strong> quay trở lại. Hãy cùng theo dõi những chia sẻ mới nhất.
+            @else
+            Nơi chia sẻ kiến thức và khơi nguồn cảm hứng sáng tạo.
+            @endif
+        </p>
+    </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    @foreach($posts as $post)
-    <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
-        <div class="p-6">
-            <h2 class="text-xl font-bold text-gray-800 mb-2 truncate" title="{{ $post->title }}">
-                <a href="/posts/{{ $post->id }}" class="hover:text-blue-600 transition">{{ $post->title }}</a>
-            </h2>
-            <p class="text-gray-600 text-sm mb-4 line-clamp-3">
-                {{ strip_tags($post->content) }}
-            </p>
-            <div class="flex items-center justify-between text-xs border-t pt-4">
-                <div class="text-gray-400 flex items-center space-x-3">
-                    <div class="flex items-center">
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        {{ $post->created_at->format('d/m/Y') }}
-                    </div>
-                    <div class="flex items-center border-l pl-3">
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                        {{ $post->user ? $post->user->name : 'Vũ Tuấn' }}
-                    </div>
-                </div>
-                <a href="/posts/{{ $post->id }}" class="text-blue-500 font-semibold hover:text-blue-700 transition">Đọc
-                    tiếp →</a>
+    {{-- Ô tìm kiếm LIVE SEARCH --}}
+    <div class="w-full md:w-80">
+        <div class="relative group">
+            <input type="text" name="search" id="live-search" value="{{ request('search') }}"
+                placeholder="Tìm bài viết..." autocomplete="off"
+                class="w-full pl-10 pr-10 py-3 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition shadow-sm group-hover:shadow-md">
+
+            <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
+                {{-- Icon Search --}}
+                <svg id="search-icon" class="w-5 h-5 transition-colors group-hover:text-blue-500" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                {{-- Icon Loading --}}
+                <svg id="loading-spinner" class="w-5 h-5 animate-spin hidden text-blue-500"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                </svg>
+            </div>
+
+            <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center">
+                @if(request('search') || request('tag'))
+                <a href="/"
+                    class="text-[10px] bg-red-50 text-red-500 px-2 py-1 rounded-md hover:bg-red-500 hover:text-white transition">Xóa
+                    lọc</a>
+                @endif
             </div>
         </div>
-    </article>
-    @endforeach
+    </div>
 </div>
 
-@if($posts->isEmpty())
-<div class="text-center py-12 text-gray-500">
-    <p class="text-lg">Chưa có bài viết nào.</p>
-    <a href="/posts/create" class="text-blue-600 hover:underline mt-2 inline-block">Hãy viết bài đầu tiên!</a>
+<div id="posts-container">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        @foreach($posts as $post)
+        <article
+            class="group bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full ring-1 ring-black/[0.02]">
+            {{-- Phần ảnh Thumbnail --}}
+            <a href="/posts/{{ $post->id }}"
+                class="aspect-[16/9] w-full overflow-hidden relative bg-gray-100 block group/thumb">
+                @if($post->thumbnail)
+                <img src="{{ asset($post->thumbnail) }}" alt="{{ $post->title }}"
+                    class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                @else
+                <div
+                    class="w-full h-full flex flex-col items-center justify-center text-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 italic transition-colors group-hover/thumb:bg-blue-50">
+                    <svg class="w-12 h-12 mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                        </path>
+                    </svg>
+                    <span class="text-xs font-medium">No cover image</span>
+                </div>
+                @endif
+
+                {{-- Badge thời gian trôi qua --}}
+                <div class="absolute top-4 left-4">
+                    <span
+                        class="px-2.5 py-1 bg-black/50 backdrop-blur-md text-white text-[10px] font-bold rounded-lg shadow-sm">
+                        {{ $post->created_at->diffForHumans() }}
+                    </span>
+                </div>
+            </a>
+
+            {{-- Nội dung bài viết --}}
+            <div class="p-6 flex-grow flex flex-col">
+                {{-- Danh sách Tags --}}
+                <div class="flex flex-wrap gap-2 mb-4">
+                    @forelse($post->tags as $tag)
+                    <a href="/?tag={{ urlencode($tag->name) }}"
+                        class="inline-block px-3 py-1 rounded-full bg-{{ $tag->color }}-50 text-{{ $tag->color }}-600 text-[10px] font-bold uppercase tracking-wider hover:bg-{{ $tag->color }}-600 hover:text-white transition-all duration-300">
+                        {{ $tag->name }}
+                    </a>
+                    @empty
+                    <span
+                        class="inline-block px-3 py-1 rounded-full bg-gray-50 text-gray-400 text-[10px] font-bold uppercase tracking-wider">
+                        General
+                    </span>
+                    @endforelse
+                </div>
+
+                <h2
+                    class="text-xl font-bold text-gray-900 mb-3 leading-snug group-hover:text-blue-600 transition-colors">
+                    <a href="/posts/{{ $post->id }}">{{ $post->title }}</a>
+                </h2>
+
+                <p class="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-6 flex-grow">
+                    {{ strip_tags($post->content) }}
+                </p>
+
+                <div class="pt-4 border-t border-gray-50 flex items-center justify-between">
+                    {{-- Thông tin tác giả --}}
+                    <div class="flex items-center group/author">
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs ring-4 ring-white shadow-sm overflow-hidden">
+                            @if($post->user && $post->user->avatar)
+                            <img src="{{ asset($post->user->avatar) }}" class="w-full h-full object-cover">
+                            @else
+                            {{ substr($post->user ? $post->user->name : 'Vũ Tuấn', 0, 1) }}
+                            @endif
+                        </div>
+                        <div class="ml-2.5">
+                            <p class="text-[11px] font-bold text-gray-900 truncate max-w-[80px]"
+                                title="{{ $post->user ? $post->user->name : 'Vũ Tuấn' }}">
+                                {{ $post->user ? $post->user->name : 'Vũ Tuấn' }}
+                            </p>
+                        </div>
+                    </div>
+
+                    {{-- Nút Đọc --}}
+                    <a href="/posts/{{ $post->id }}"
+                        class="flex items-center text-blue-600 font-bold text-xs hover:text-blue-800 transition">
+                        Đọc tiếp
+                        <svg class="w-3.5 h-3.5 ml-1 transform group-hover:translate-x-1.5 transition-transform"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </article>
+        @endforeach
+    </div>
+
+    {{-- Phân trang --}}
+    <div class="mt-12" id="pagination-links">
+        {{ $posts->links() }}
+    </div>
+
+    @if($posts->isEmpty())
+    <div class="text-center py-20 bg-white rounded-3xl shadow-sm border border-dashed border-gray-200">
+        <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+        </div>
+        <p class="text-gray-500 text-lg font-medium">Không tìm thấy bài viết nào phù hợp.</p>
+        <a href="/"
+            class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-700 transition inline-block">
+            Quay lại tất cả bài viết
+        </a>
+    </div>
+    @endif
 </div>
-@endif
+
+<script>
+    document.addEventListener('DOMContentLoaded', functio n () {
+        const searchInput = document.getElementById('live-search');
+        const container = document.getElementById('posts-container');
+        const searchIcon = document.getElementById('search-icon');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        let searchTimeout;
+
+        searchInput.addEventListener('input', functi on () {
+            clearTimeout(searchTimeout    // Show loading
+            searchIcon.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+
+            searchTimeout = setTimeout(() => {
+                const query = searchInput.value;
+                const url = new URL(window.location.href);
+                url.searchParams.set('search', query);
+                url.searchParams.delete('page'); // Tìm kiếm thì reset về trang 1
+
+                fetch(url, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                             (res => res.text())
+                         then(html => {
+                            const parser = new DOMParser(                               const doc = parser.parseFromString(html, 'text/h                                   const newContent = doc.getElementById('posts-container').                                       container.innerHTML                         / Update URL without reload
+                            window.history.pushState({}, '', url                         ng
+                                     n.classList.remove('hidden');
+                                 ngSpinner.classList.add('hidden');
+                         )
+                        .catch(err =>                               console.error                                   searchIcon.classList.remove(                                       loadingSpinner.classList.                                       });
+            }, 500); // Wait 500ms after last keystroke
+     });
+</script>
 @endsection

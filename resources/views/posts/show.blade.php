@@ -86,7 +86,7 @@
             <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
                 {{ $post->title }}
             </h1>
-            <div class="flex items-center text-sm text-gray-500 space-x-4">
+            <div class="flex items-center text-sm text-gray-500 space-x-4 mb-4">
                 <div class="flex items-center">
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -102,6 +102,18 @@
                     Đăng ngày {{ $post->created_at->format('d/m/Y') }}
                 </div>
             </div>
+
+            {{-- Hiển thị Tags --}}
+            @if($post->tags->count() > 0)
+            <div class="flex flex-wrap gap-2 pt-2">
+                @foreach($post->tags as $tag)
+                <span
+                    class="inline-block px-3 py-1 rounded-full bg-{{ $tag->color }}-50 text-{{ $tag->color }}-600 text-[11px] font-bold uppercase tracking-wider border border-{{ $tag->color }}-100">
+                    #{{ $tag->name }}
+                </span>
+                @endforeach
+            </div>
+            @endif
         </header>
 
         <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
