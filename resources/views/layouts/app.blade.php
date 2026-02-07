@@ -63,7 +63,7 @@
                     @auth
                     {{-- Desktop Menu --}}
                     <div
-                        class="hidden sm:flex items-center gap-3 mr-4 py-1 px-1 bg-gray-50 rounded-2xl border border-gray-100">
+                        class="hidden sm:flex items-center gap-3 mr-4 py-1 px-1 bg-gray-50 rounded-xl border border-gray-100">
                         <a href="{{ route('posts.my') }}"
                             class="px-4 py-2 text-xs font-extrabold text-gray-500 hover:text-blue-600 hover:bg-white rounded-xl transition duration-200 uppercase tracking-widest">
                             Bài của tôi
@@ -77,7 +77,7 @@
                     {{-- Profile --}}
                     <div class="flex items-center gap-3">
                         <a href="{{ route('profile.edit') }}"
-                            class="group flex items-center gap-3 p-1.5 hover:bg-gray-50 rounded-2xl transition duration-300">
+                            class="group flex items-center gap-3 p-1.5 hover:bg-gray-50 rounded-xl transition duration-300">
                             <div
                                 class="w-9 h-9 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 font-extrabold text-sm border border-blue-50 shadow-inner group-hover:scale-110 transition-transform">
                                 @if(Auth::user()->avatar)
@@ -106,10 +106,10 @@
                     </div>
                     @else
                     <a href="{{ route('login') }}"
-                        class="px-5 py-2.5 text-sm font-extrabold text-gray-500 hover:text-blue-600 transition">Đăng
+                        class="px-3 md:px-5 py-2 md:py-2.5 text-[11px] md:text-sm font-bold md:font-extrabold text-gray-500 hover:text-blue-600 transition">Đăng
                         nhập</a>
                     <a href="{{ route('register') }}"
-                        class="px-6 py-3 bg-gray-900 text-white text-sm font-extrabold rounded-2xl hover:bg-blue-600 transition shadow-lg shadow-gray-200">Bắt
+                        class="px-4 md:px-6 py-2 md:py-3 bg-gray-900 text-white text-[11px] md:text-sm font-bold md:font-extrabold rounded-xl md:rounded-2xl hover:bg-blue-600 transition shadow-lg shadow-gray-200">Bắt
                         đầu ngay</a>
                     @endauth
                 </div>
@@ -123,7 +123,7 @@
         @if(session('success'))
         <div class="max-w-4xl mx-auto mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
             <div
-                class="bg-emerald-500 text-white px-6 py-4 rounded-3xl shadow-xl shadow-emerald-100 flex items-center justify-between">
+                class="bg-emerald-500 text-white px-6 py-4 rounded-xl shadow-xl shadow-emerald-100 flex items-center justify-between">
                 <div class="flex items-center gap-3 font-bold">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>

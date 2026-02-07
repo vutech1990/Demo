@@ -9,7 +9,7 @@
 
     @if ($errors->any())
     <div
-        class="bg-red-50 text-red-700 p-6 mb-8 rounded-[2rem] border border-red-100 flex items-start shadow-sm animate-in fade-in slide-in-from-top-2 duration-500">
+        class="bg-red-50 text-red-700 p-6 mb-8 rounded-2xl border border-red-100 flex items-start shadow-sm animate-in fade-in slide-in-from-top-2 duration-500">
         <div
             class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center mr-4 shadow-md shadow-red-200 flex-shrink-0">
             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,14 +34,14 @@
         @method('PUT')
 
         <div
-            class="bg-white rounded-[2.5rem] shadow-xl shadow-amber-900/[0.03] border border-gray-100 p-6 md:p-10 space-y-8">
+            class="bg-white rounded-2xl shadow-xl shadow-amber-900/[0.03] border border-gray-100 p-6 md:p-10 space-y-8">
             {{-- Tiêu đề --}}
             <div>
                 <label for="title"
                     class="block mb-3 text-xs font-extrabold text-gray-400 uppercase tracking-widest pl-1">Tiêu đề bài
                     viết</label>
                 <input type="text" id="title" name="title" value="{{ old('title', $post->title) }}" required
-                    class="w-full px-6 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 focus:outline-none transition-all duration-300 font-extrabold text-gray-900 text-lg md:text-2xl placeholder-gray-300 @error('title') border-red-500 bg-red-50/30 @enderror"
+                    class="w-full px-6 py-4 bg-gray-50 border border-transparent rounded-xl focus:bg-white focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 focus:outline-none transition-all duration-300 font-extrabold text-gray-900 text-lg md:text-2xl placeholder-gray-300 @error('title') border-red-500 bg-red-50/30 @enderror"
                     placeholder="Cập nhật tiêu đề bài viết...">
             </div>
 
@@ -54,11 +54,11 @@
                     @if($post->thumbnail)
                     <div class="mb-4 relative group w-inline-block">
                         <img src="{{ asset($post->thumbnail) }}"
-                            class="w-full h-32 md:h-40 object-cover rounded-2xl shadow-md border border-gray-100">
+                            class="w-full h-32 md:h-40 object-cover rounded-xl shadow-md border border-gray-100">
                         <div
-                            class="absolute inset-0 bg-black/40 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            class="absolute inset-0 bg-black/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <span
-                                class="text-white text-xs font-bold px-3 py-1 bg-black/50 rounded-full backdrop-blur-md">Ảnh
+                                class="text-white text-xs font-bold px-3 py-1 bg-black/50 rounded-lg backdrop-blur-md">Ảnh
                                 hiện tại</span>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                         <input type="file" id="thumbnail" name="thumbnail" accept="image/*"
                             class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
                         <div
-                            class="w-full h-24 rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 group-hover:bg-amber-50/50 group-hover:border-amber-200 transition-all flex items-center justify-center p-4 text-center">
+                            class="w-full h-24 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 group-hover:bg-amber-50/50 group-hover:border-amber-200 transition-all flex items-center justify-center p-4 text-center">
                             <div
                                 class="w-8 h-8 bg-white rounded-lg shadow-sm flex items-center justify-center text-amber-600 mr-3 group-hover:scale-110 transition-transform">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,12 +91,12 @@
                     <div class="relative mb-4">
                         <input type="text" id="tags-input" name="tags"
                             value="{{ old('tags', $post->tags->pluck('name')->implode(', ')) }}"
-                            class="w-full px-5 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 focus:outline-none transition-all duration-300 font-bold text-gray-800 placeholder-gray-300"
+                            class="w-full px-5 py-4 bg-gray-50 border border-transparent rounded-xl focus:bg-white focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 focus:outline-none transition-all duration-300 font-bold text-gray-800 placeholder-gray-300"
                             placeholder="Laravel, PHP, Web Design...">
                     </div>
 
                     @if($tags->count() > 0)
-                    <div class="p-4 bg-amber-50/30 rounded-2xl border border-amber-100/50">
+                    <div class="p-4 bg-amber-50/30 rounded-xl border border-amber-100/50">
                         <p class="text-[9px] text-amber-600 mb-3 uppercase font-extrabold tracking-widest">Gợi ý nhãn
                             dán:</p>
                         <div class="flex flex-wrap gap-2">
@@ -117,7 +117,7 @@
                 <label for="content"
                     class="block mb-3 text-xs font-extrabold text-gray-400 uppercase tracking-widest pl-1">Nội dung chi
                     tiết</label>
-                <div class="rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+                <div class="rounded-xl overflow-hidden border border-gray-100 shadow-sm">
                     <textarea id="editor" name="content" rows="12"
                         class="w-full px-4 py-2 focus:outline-none @error('content') border-red-500 @enderror">{{ old('content', $post->content) }}</textarea>
                 </div>
@@ -135,7 +135,7 @@
                 Hủy bỏ thay đổi
             </a>
             <button type="submit"
-                class="w-full md:w-auto px-12 py-5 bg-amber-500 hover:bg-black text-white font-extrabold rounded-[1.5rem] shadow-2xl shadow-amber-200 transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center">
+                class="w-full md:w-auto px-12 py-5 bg-amber-500 hover:bg-black text-white font-extrabold rounded-xl shadow-2xl shadow-amber-200 transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center">
                 <span>Cập nhật ngay</span>
                 <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"

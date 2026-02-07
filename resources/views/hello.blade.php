@@ -27,7 +27,7 @@
         <div class="relative group">
             <input type="text" name="search" id="live-search" value="{{ request('search') }}"
                 placeholder="Tìm bài viết..." autocomplete="off"
-                class="w-full pl-10 pr-10 py-3.5 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition shadow-sm group-hover:shadow-md">
+                class="w-full pl-10 pr-10 py-3.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition shadow-sm group-hover:shadow-md">
 
             <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
                 <svg id="search-icon" class="w-5 h-5 transition-colors group-hover:text-blue-500" fill="none"
@@ -59,7 +59,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         @foreach($posts as $post)
         <article
-            class="group bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full ring-1 ring-black/[0.02]">
+            class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full ring-1 ring-black/[0.02]">
             {{-- Phần ảnh Thumbnail --}}
             <a href="/posts/{{ $post->id }}"
                 class="aspect-[16/9] w-full overflow-hidden relative bg-gray-100 block group/thumb">
@@ -89,12 +89,12 @@
                 <div class="flex flex-wrap gap-2 mb-4">
                     @forelse($post->tags as $tag)
                     <a href="/?tag={{ urlencode($tag->name) }}"
-                        class="inline-block px-3 py-1 rounded-full bg-{{ $tag->color }}-50 text-{{ $tag->color }}-600 text-[10px] font-extrabold uppercase tracking-widest hover:bg-{{ $tag->color }}-600 hover:text-white transition-all duration-300">
+                        class="px-4 py-1.5 rounded-lg bg-{{ $tag->color }}-50 text-{{ $tag->color }}-600 text-[10px] font-extrabold uppercase tracking-widest border border-{{ $tag->color }}-100 hover:bg-{{ $tag->color }}-600 hover:text-white transition-all duration-300">
                         {{ $tag->name }}
                     </a>
                     @empty
                     <span
-                        class="inline-block px-3 py-1 rounded-full bg-gray-50 text-gray-400 text-[10px] font-extrabold uppercase tracking-widest">General</span>
+                        class="inline-block px-3 py-1 rounded-lg bg-gray-50 text-gray-400 text-[10px] font-extrabold uppercase tracking-widest">General</span>
                     @endforelse
                 </div>
 
@@ -110,7 +110,7 @@
                 <div class="pt-5 border-t border-gray-50 flex items-center justify-between">
                     <div class="flex items-center group/author">
                         <div
-                            class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white font-extrabold text-xs ring-4 ring-white shadow-sm overflow-hidden transition-transform group-hover/author:rotate-6">
+                            class="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white font-extrabold text-xs ring-4 ring-white shadow-sm overflow-hidden transition-transform group-hover/author:rotate-6">
                             @if($post->user && $post->user->avatar)
                             <img src="{{ asset($post->user->avatar) }}" class="w-full h-full object-cover">
                             @else
@@ -145,8 +145,8 @@
     </div>
 
     @if($posts->isEmpty())
-    <div class="text-center py-20 bg-white rounded-[2.5rem] shadow-sm border border-dashed border-gray-200 px-6">
-        <div class="w-20 h-20 bg-gray-50 rounded-[2rem] flex items-center justify-center mx-auto mb-6 shadow-inner">
+    <div class="text-center py-20 bg-white rounded-2xl shadow-sm border border-dashed border-gray-200 px-6">
+        <div class="w-20 h-20 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner">
             <svg class="w-10 h-10 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -154,7 +154,7 @@
         </div>
         <p class="text-gray-500 text-lg font-extrabold">Không tìm thấy bài viết nào phù hợp.</p>
         <a href="/"
-            class="mt-4 px-8 py-3 bg-blue-600 text-white rounded-2xl font-extrabold hover:bg-black transition inline-block shadow-lg shadow-blue-100">Quay
+            class="mt-4 px-8 py-3 bg-blue-600 text-white rounded-xl font-extrabold hover:bg-black transition inline-block shadow-lg shadow-blue-100">Quay
             lại tất cả bài viết</a>
     </div>
     @endif

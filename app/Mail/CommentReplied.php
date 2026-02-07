@@ -25,7 +25,7 @@ class CommentReplied extends Mailable
 
     public function build()
     {
-        return $this->subject('Có phản hồi mới cho bình luận của bạn tại ' . $this->post->title)
+        return $this->subject('Có phản hồi mới cho bình luận của bạn tại ' . ($this->post->title ?? 'bài viết'))
             ->view('emails.comment-replied');
     }
 }

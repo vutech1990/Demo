@@ -10,10 +10,10 @@
         </div>
 
         {{-- Form Card --}}
-        <div class="bg-white p-10 md:p-12 rounded-[2.5rem] shadow-2xl shadow-blue-900/[0.04] border border-gray-100">
+        <div class="bg-white p-10 md:p-12 rounded-xl shadow-2xl shadow-blue-900/[0.04] border border-gray-100">
             @if ($errors->has('email'))
             <div
-                class="bg-red-50 text-red-700 p-4 mb-8 rounded-2xl text-xs font-bold border border-red-100 flex items-center animate-shake">
+                class="bg-red-50 text-red-700 p-4 mb-8 rounded-lg text-xs font-bold border border-red-100 flex items-center animate-shake">
                 <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                         d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
@@ -30,7 +30,7 @@
                         class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest pl-1">Email
                         của bạn</label>
                     <input type="email" name="email" value="{{ old('email') }}" required autofocus
-                        class="w-full px-6 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all duration-300 font-bold text-gray-900 placeholder-gray-300"
+                        class="w-full px-6 py-4 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all duration-300 font-bold text-gray-900 placeholder-gray-300"
                         placeholder="example@gmail.com">
                 </div>
 
@@ -42,13 +42,13 @@
                             class="text-[10px] font-extrabold text-blue-600 hover:text-black uppercase tracking-widest transition">Quên?</a>
                     </div>
                     <input type="password" name="password" required
-                        class="w-full px-6 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all duration-300 font-bold text-gray-900 placeholder-gray-300"
+                        class="w-full px-6 py-4 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all duration-300 font-bold text-gray-900 placeholder-gray-300"
                         placeholder="••••••••">
                 </div>
 
                 <div class="pt-2">
                     <button type="submit"
-                        class="w-full py-5 bg-blue-600 hover:bg-black text-white font-extrabold rounded-2xl transition-all shadow-xl shadow-blue-100 transform active:scale-95 flex items-center justify-center">
+                        class="w-full py-5 bg-blue-600 hover:bg-black text-white font-extrabold rounded-lg transition-all shadow-xl shadow-blue-100 transform active:scale-95 flex items-center justify-center">
                         <span>Vào thế giới Demo WSU</span>
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"

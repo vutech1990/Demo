@@ -6,10 +6,10 @@
         <div class="relative">
             @if($user->avatar)
             <img src="{{ asset('avatars/' . $user->avatar) }}" alt="Avatar"
-                class="w-16 h-16 rounded-full object-cover border-2 border-blue-500">
+                class="w-16 h-16 rounded-xl object-cover border-2 border-blue-500">
             @else
             <div
-                class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-2xl border-2 border-blue-500">
+                class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 font-bold text-2xl border-2 border-blue-500">
                 {{ substr($user->name, 0, 1) }}
             </div>
             @endif
@@ -45,7 +45,7 @@
         <div class="mb-6">
             <label class="block text-sm font-semibold text-gray-700 mb-2">Ảnh đại diện mới</label>
             <input type="file" name="avatar" accept="image/*"
-                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition">
+                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition">
             <p class="text-[10px] text-gray-400 mt-1">Định dạng: JPG, PNG, GIF (Tối đa 2MB)</p>
             @error('avatar')
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>

@@ -18,7 +18,7 @@
 
     @if(session('success'))
     <div
-        class="bg-emerald-50 text-emerald-700 p-5 mb-8 rounded-[2rem] border border-emerald-100 flex items-center shadow-sm animate-in fade-in slide-in-from-top-2 duration-500">
+        class="bg-emerald-50 text-emerald-700 p-5 mb-8 rounded-2xl border border-emerald-100 flex items-center shadow-sm animate-in fade-in slide-in-from-top-2 duration-500">
         <div
             class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center mr-3 shadow-md shadow-emerald-200 flex-shrink-0">
             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -29,7 +29,7 @@
     </div>
     @endif
 
-    <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-blue-900/[0.04] overflow-hidden border border-gray-100">
+    <div class="bg-white rounded-2xl shadow-2xl shadow-blue-900/[0.04] overflow-hidden border border-gray-100">
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead class="bg-gray-50/50 border-b border-gray-100">
@@ -89,7 +89,7 @@
                         <td class="px-8 py-6 hidden lg:table-cell">
                             <div class="flex flex-col items-center">
                                 <div
-                                    class="flex items-center px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-xs font-extrabold">
+                                    class="flex items-center px-4 py-1.5 rounded-lg bg-blue-50 text-blue-600 text-xs font-extrabold">
                                     <svg class="w-3.5 h-3.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                                             d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
@@ -134,7 +134,7 @@
                     <tr>
                         <td colspan="3" class="px-8 py-20 text-center">
                             <div
-                                class="w-20 h-20 bg-gray-50 rounded-[2rem] flex items-center justify-center mx-auto mb-6 shadow-inner">
+                                class="w-20 h-20 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner">
                                 <svg class="w-10 h-10 text-gray-200" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

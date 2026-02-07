@@ -26,7 +26,7 @@ class NewCommentNotification extends Mailable
 
     public function build()
     {
-        return $this->subject('Bài viết "' . $this->post->title . '" có bình luận mới')
+        return $this->subject('Bài viết "' . ($this->post->title ?? 'không tên') . '" có bình luận mới')
             ->view('emails.new-comment');
     }
 }

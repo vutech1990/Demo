@@ -10,7 +10,7 @@
         </div>
 
         {{-- Form Card --}}
-        <div class="bg-white p-10 md:p-12 rounded-[2.5rem] shadow-2xl shadow-blue-900/[0.04] border border-gray-100">
+        <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md border border-gray-100">
             <form action="{{ route('register') }}" method="POST" class="space-y-6">
                 @csrf
 
@@ -18,7 +18,7 @@
                     <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest pl-1">Họ
                         và tên của bạn</label>
                     <input type="text" name="name" value="{{ old('name') }}" required autofocus
-                        class="w-full px-6 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all duration-300 font-bold text-gray-900 placeholder-gray-300 @error('name') border-red-500 bg-red-50/30 @enderror"
+                        class="w-full px-6 py-4 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all duration-300 font-bold text-gray-900 placeholder-gray-300 @error('name') border-red-500 bg-red-50/30 @enderror"
                         placeholder="Nguyễn Văn A">
                     @error('name')
                     <p class="text-red-500 text-[10px] font-bold mt-2 ml-1 uppercase tracking-wider">{{ $message }}</p>
@@ -30,7 +30,7 @@
                         class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest pl-1">Địa
                         chỉ Email</label>
                     <input type="email" name="email" value="{{ old('email') }}" required
-                        class="w-full px-6 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all duration-300 font-bold text-gray-900 placeholder-gray-300 @error('email') border-red-500 bg-red-50/30 @enderror"
+                        class="w-full px-6 py-4 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all duration-300 font-bold text-gray-900 placeholder-gray-300 @error('email') border-red-500 bg-red-50/30 @enderror"
                         placeholder="example@gmail.com">
                     @error('email')
                     <p class="text-red-500 text-[10px] font-bold mt-2 ml-1 uppercase tracking-wider">{{ $message }}</p>
@@ -43,7 +43,7 @@
                             class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest pl-1">Mật
                             khẩu</label>
                         <input type="password" name="password" required
-                            class="w-full px-5 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all duration-300 font-bold text-gray-900 placeholder-gray-300 @error('password') border-red-500 bg-red-50/30 @enderror"
+                            class="w-full px-5 py-4 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all duration-300 font-bold text-gray-900 placeholder-gray-300 @error('password') border-red-500 bg-red-50/30 @enderror"
                             placeholder="••••••••">
                     </div>
                     <div>
@@ -51,7 +51,7 @@
                             class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest pl-1">Xác
                             nhận</label>
                         <input type="password" name="password_confirmation" required
-                            class="w-full px-5 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all duration-300 font-bold text-gray-900 placeholder-gray-300"
+                            class="w-full px-5 py-4 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all duration-300 font-bold text-gray-900 placeholder-gray-300"
                             placeholder="••••••••">
                     </div>
                 </div>
@@ -62,7 +62,7 @@
 
                 <div class="pt-4">
                     <button type="submit"
-                        class="w-full py-5 bg-blue-600 hover:bg-black text-white font-extrabold rounded-2xl transition-all shadow-xl shadow-blue-100 transform active:scale-95 flex items-center justify-center">
+                        class="w-full py-5 bg-blue-600 hover:bg-black text-white font-extrabold rounded-lg transition-all shadow-xl shadow-blue-100 transform active:scale-95 flex items-center justify-center">
                         <span>Tạo tài khoản ngay</span>
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
