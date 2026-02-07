@@ -26,9 +26,22 @@
                     + Viết bài mới
                 </a>
 
-                <span class="text-gray-700 font-semibold border-l pl-4 hidden sm:inline">{{ Auth::user()->name }}</span>
+                <div class="flex items-center space-x-2 border-l pl-4 hidden sm:flex">
+                    @if(Auth::user()->avatar)
+                    <img src="{{ asset('avatars/' . Auth::user()->avatar) }}" alt="Avatar"
+                        class="w-8 h-8 rounded-full object-cover border border-blue-500">
+                    @else
+                    <div
+                        class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xs border border-blue-500">
+                        {{ substr(Auth::user()->name, 0, 1) }}
+                    </div>
+                    @endif
+                    <a href="{{ route('profile.edit') }}"
+                        class="text-gray-700 font-semibold hover:text-blue-600 transition">{{ Auth::user()->name }}</a>
+                </div>
 
-                <form action="{{ route('logout') }}" method="POST" class="inline">
+                <form action="{{ route('logout') }}" method="POST" class="inline"
+                    onsubmit="return confirm('Bạn có chắc chắn muốn đăng xuất không?');">
                     @csrf
                     <button type="submit"
                         class="text-red-500 hover:text-red-700 font-medium ml-2 text-sm border border-red-200 px-3 py-1 rounded hover:bg-red-50 transition">

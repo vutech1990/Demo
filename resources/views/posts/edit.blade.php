@@ -26,7 +26,7 @@
 
         <div class="mb-6">
             <label for="content" class="block mb-2 text-sm font-medium text-gray-700">Nội dung</label>
-            <textarea id="content" name="content" rows="8" required
+            <textarea id="editor" name="content" rows="8"
                 class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:outline-none transition @error('content') border-red-500 @enderror">{{ old('content', $post->content) }}</textarea>
         </div>
 
@@ -39,4 +39,23 @@
         </div>
     </form>
 </div>
+
+{{-- Thêm CKEditor 5 --}}
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            ckfinder: {
+                uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}"
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+<style>
+    .ck-editor__editable_inline {
+        min-height: 300px;
+    }
+</style>
 @endsection

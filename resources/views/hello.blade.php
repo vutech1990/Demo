@@ -13,7 +13,7 @@
                 <a href="/posts/{{ $post->id }}" class="hover:text-blue-600 transition">{{ $post->title }}</a>
             </h2>
             <p class="text-gray-600 text-sm mb-4 line-clamp-3">
-                {{ $post->content }}
+                {{ strip_tags($post->content) }}
             </p>
             <div class="flex items-center justify-between text-xs border-t pt-4">
                 <div class="text-gray-400 flex items-center">

@@ -17,8 +17,12 @@
             <input type="email" name="email" value="{{ old('email') }}" required autofocus
                 class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror">
         </div>
-        <div class="mb-6">
-            <label class="block mb-2 text-sm font-bold text-gray-700">Mật khẩu</label>
+        <div class="mb-4">
+            <div class="flex justify-between items-center mb-2">
+                <label class="text-sm font-bold text-gray-700">Mật khẩu</label>
+                <a href="{{ route('password.request') }}" class="text-xs text-blue-600 hover:underline">Quên mật
+                    khẩu?</a>
+            </div>
             <input type="password" name="password" required
                 class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>

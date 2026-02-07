@@ -16,54 +16,84 @@ class PostController extends Controller
     // Lưu bài viết mới vào database
     public function store(Request $request)
     {
-        // 1. Validate dữ liệu
-        $validated = $request->validate([
+        $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
         ]);
 
-        // 2. Tạo bài viết mới
-        Post::create($validated);
+        Post::create([
+            'title' => $request->title,
+            'content' => $request->content,
+            'user_id' => auth()->id(), // Lưu ID người đăng
+        ]);
 
-        // 3. Quay về trang chủ
-        return redirect('/')->with('success', 'Bài viết đã được tạo thành công!');
+        return redirect('/')->with('success', 'Bài viết đã được đăng thành công!');
     }
 
-    // Hiển thị chi tiết bài viết
     public function show($id)
     {
-        $post = Post::findOrFail($id);
-        return view('posts.show', ['post' => $post]);
+        $post = Post::with(['comments.replies', 'user'])->findOrFail($id);
+        return view('posts.show', compact('post'));
     }
 
-    // Form chỉnh sửa
     public function edit($id)
     {
         $post = Post::findOrFail($id);
-        return view('posts.edit', ['post' => $post]);
+
+        // Kiểm tra quyền: Là Admin HOẶC là chủ bài viết
+        if (auth()->user()->email !== 'vutech1990@gmail.com' && auth()->id() !== $post->user_id) {
+            abort(403, 'Bạn không có quyền chỉnh sửa bài viết này!');
+        }
+
+        return view('posts.edit', compact('post'));
     }
 
-    // Cập nhật bài viết
     public function update(Request $request, $id)
     {
         $post = Post::findOrFail($id);
 
-        $validated = $request->validate([
+        // Kiểm tra quyền: Là Admin HOẶC là chủ bài viết
+        if (auth()->user()->email !== 'vutech1990@gmail.com' && auth()->id() !== $post->user_id) {
+            abort(403, 'Bạn không có quyền cập nhật bài viết này!');
+        }
+
+        $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
         ]);
 
-        $post->update($validated);
+        $post->update($request->all());
 
-        return redirect('/posts/' . $id)->with('success', 'Bài viết đã được cập nhật thành công!');
+        return redirect("/posts/$id")->with('success', 'Bài viết đã được cập nhật!');
     }
 
-    // Xóa bài viết
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
+
+        // CHỈ Admin mới có quyền xóa bài viết
+        if (auth()->user()->email !== 'vutech1990@gmail.com') {
+            abort(403, 'Chỉ Admin mới có quyền xóa bài viết này!');
+        }
+
         $post->delete();
 
         return redirect('/')->with('success', 'Bài viết đã được xóa thành công!');
+    }
+
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $originName = $request->file('upload')->getClientOriginalName();
+            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $request->file('upload')->getClientOriginalExtension();
+            $fileName = $fileName . '_' . time() . '.' . $extension;
+
+            // Di chuyển file vào thư mục public/media
+            $request->file('upload')->move(public_path('media'), $fileName);
+
+            $url = asset('media/' . $fileName);
+            return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $url]);
+        }
     }
 }
