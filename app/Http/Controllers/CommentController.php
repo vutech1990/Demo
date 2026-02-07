@@ -10,9 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function store(Request $request, $postId)
+    public function store(Request $request, Post $post)
     {
-        $post = Post::findOrFail($postId);
 
         if (!Auth::check()) {
             $userExists = User::where('email', $request->email)->exists();

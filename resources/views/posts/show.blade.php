@@ -129,8 +129,8 @@
                         <div class="ml-4">
                             <p class="text-sm font-extrabold text-gray-900">{{ $post->user ? $post->user->name : 'Tác
                                 giả' }}</p>
-                            <p class="text-xs text-gray-400 font-medium">Đã đăng vào {{
-                                $post->created_at->format('d/m/Y') }}</p>
+                            <p class="text-xs text-gray-400 font-medium">Đã đăng vào {{ $post->created_at ?
+                                $post->created_at->format('d/m/Y') : 'Chưa rõ ngày' }}</p>
                         </div>
                     </div>
 
@@ -194,7 +194,7 @@
             </div>
             @endif
 
-            <form action="{{ route('comments.store', $post->id) }}" method="POST">
+            <form action="{{ route('comments.store', $post) }}" method="POST">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     @auth
@@ -275,7 +275,7 @@
 
                 {{-- Form Trả lời --}}
                 <div id="reply-form-{{ $comment->id }}" class="hidden mt-8 pl-6 md:pl-12 border-l-4 border-blue-50">
-                    <form action="{{ route('comments.store', $post->id) }}" method="POST"
+                    <form action="{{ route('comments.store', $post) }}" method="POST"
                         class="bg-gray-50/50 p-6 rounded-2xl border border-gray-100">
                         @csrf
                         <input type="hidden" name="parent_id" value="{{ $comment->id }}">

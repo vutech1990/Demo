@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Routes cho Bình luận
-Route::post('/posts/{id}/comments', [CommentController::class , 'store'])->name('comments.store');
+Route::post('/posts/{post}/comments', [CommentController::class , 'store'])->name('comments.store');
 
 
 
