@@ -81,7 +81,7 @@
     </div>
 
     {{-- Nội dung bài viết --}}
-    <article class="bg-white p-8 rounded-xl shadow-md">
+    <article class="bg-white p-5 md:p-8 rounded-xl shadow-md">
         <header class="mb-6 border-b pb-6">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
                 {{ $post->title }}

@@ -63,7 +63,7 @@
         </div>
     </nav>
 
-    <div class="container mx-auto px-4 max-w-4xl">
+    <div class="container mx-auto px-4 max-w-6xl">
         {{-- Hiển thị thông báo thành công --}}
         @if(session('success'))
         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded shadow-sm" role="alert">
@@ -80,4 +80,40 @@
 
 </body>
 
+</html>                             </svg>
+                                </button>
+                            </form>
+                        </div>
+                    @else
+                        <a href="{{ route('login') }}" class="px-4 py-2 text-gray-600 font-bold hover:text-blue-600">Đăng nhập</a>
+                        <a href="{{ route('register') }}" class="px-5 py-2.5 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition shadow-lg shadow-gray-200">Đăng ký</a>
+                    @endauth
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 max-w-6xl">
+        {{-- Thông báo --}}
+        @if(session('success'))
+        <div class="bg-emerald-50 border border-emerald-100 text-emerald-700 p-4 mb-8 rounded-2xl flex items-center shadow-sm animate-in fade-in slide-in-from-top-4 duration-500">
+            <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <p class="font-medium">{{ session('success') }}</p>
+        </div>
+        @endif
+
+        @yield('content')
+    </main>
+
+    <footer class="mt-20 py-10 border-t border-gray-100 italic">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-400 text-sm">&copy; {{ date('Y') }} Demo WSU Blog. Tất cả quyền được bảo lưu.</p>
+        </div>
+    </footer>
+
+</body>
 </html>

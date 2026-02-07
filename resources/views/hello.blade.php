@@ -4,7 +4,7 @@
 <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
     <div class="text-center md:text-left">
         <h1
-            class="text-4xl font-extrabold bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent mb-3">
+            class="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent mb-3">
             @if(request('tag'))
             Chủ đề: {{ request('tag') }}
             @elseif(request('search'))
@@ -61,8 +61,8 @@
         <article
             class="group bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full ring-1 ring-black/[0.02]">
             {{-- Phần ảnh Thumbnail --}}
-            <a href="/posts/{{ $post->id }}"
-                class="aspect-[16/9] w-full overflow-hidden relative bg-gray-100 block group/thumb">
+            <div id="comment-{{ $comment->id }}"
+                class="comment-block bg-white p-4 md:p-6 rounded-2xl border border-gray-100 shadow-sm transition-all duration-500">
                 @if($post->thumbnail)
                 <img src="{{ asset($post->thumbnail) }}" alt="{{ $post->title }}"
                     class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
@@ -83,7 +83,7 @@
                         {{ $post->created_at->diffForHumans() }}
                     </span>
                 </div>
-            </a>
+            </div>
 
             <div class="p-6 flex-grow flex flex-col">
                 <div class="flex flex-wrap gap-2 mb-4">
@@ -145,7 +145,8 @@
     </div>
 
     @if($posts->isEmpty())
-    <div class="text-center py-20 bg-white rounded-3xl shadow-sm border border-dashed border-gray-200">
+    <div id="comment-section" class="mt-12 bg-gray-50 p-4 md:p-8 rounded-2xl shadow-inner border border-gray-100">sm
+        border border-dashed border-gray-200">
         <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -178,31 +179,3 @@
             searchTimeout = setTimeout(() => {
                 const query = searchInput.value;
                 const url = new URL(window.location.href);
-                url.searchParams.set('search', query);
-                url.searchParams.delete('page');
-
-                fetch(url, {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                })
-                    .then(res => res.text())
-                    .then(html => {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        const newContent = doc.getElementById('posts-container');
-                        if (newContent) {
-                            container.innerHTML = newContent.innerHTML;
-                        }
-                        window.history.pushState({}, '', url);
-                        searchIcon.classList.remove('hidden');
-                        loadingSpinner.classList.add('hidden');
-                    })
-                    .catch(err => {
-                        console.error('Search error:', err);
-                        searchIcon.classList.remove('hidden');
-                        loadingSpinner.classList.add('hidden');
-                    });
-            }, 400);
-        });
-    });
-</script>
-@endsection
