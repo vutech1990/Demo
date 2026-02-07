@@ -17,7 +17,7 @@
 
     <nav class="bg-white shadow-md mb-8 sticky top-0 z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold text-blue-600 hover:text-blue-800 transition">MyBlog</a>
+            <a href="/" class="text-2xl font-bold text-blue-600 hover:text-blue-800 transition">Demo WSU</a>
 
             <a href="/posts/create"
                 class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition shadow-sm cursor-pointer">

@@ -2,7 +2,7 @@
 
 @section('content')
 <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
-    Xin chào, {{ $name }}!
+    Xin chào, {{ $name }}! (Demo WSU)
 </h1>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
